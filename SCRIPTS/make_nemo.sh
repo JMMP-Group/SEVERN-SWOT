@@ -19,7 +19,11 @@
 #'
 #::
 #load modules
-module -s restore /work/n01/shared/acc/n01_modules/ucx_env
+#module -s restore /work/n01/shared/acc/n01_modules/ucx_env
+module load cpe/21.03
+module load cray-hdf5-parallel
+module load cray-netcdf-hdf5parallel
+export LD_LIBRARY_PATH=$CRAY_LD_LIBRARY_PATH:$LD_LIBRARY_PATH
 
 cd $WDIR
 # Checkout the code from the paris repository

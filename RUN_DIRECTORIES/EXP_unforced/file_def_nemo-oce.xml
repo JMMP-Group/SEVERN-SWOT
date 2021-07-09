@@ -10,11 +10,7 @@
     <file_definition type="one_file" name="@expname@_@freq@" sync_freq="1d" min_digits="4"> 
     <!--<file_definition type="multiple_file" name="@expname@_@freq@_@startdate@_@enddate@" sync_freq="1d" min_digits="4">-->
 
-      <file_group id="1ts" output_freq="1ts"  output_level="10" enabled=".TRUE."> <!-- 1 time step files -->
-	<file id="file1" name_suffix="_t" description="daily mean t-grid" enabled=".TRUE.">	      
-          <field field_ref="sst" name="sst" />
-        </file>
-      </file_group>
+      <file_group id="1ts" output_freq="1ts"  output_level="10" enabled=".TRUE."/> <!-- 1 time step files -->
       
       <file_group id="3h" output_freq="3h"  output_level="10" enabled=".TRUE."/> <!-- 3h files -->
       <file_group id="2h" output_freq="2h"  output_level="10" enabled=".TRUE."/> <!-- 2h files -->     
@@ -25,7 +21,11 @@
       </file_group>
 -->
 
-      <file_group id="1h" output_freq="1h"  output_level="10" enabled=".TRUE."/> <!-- 4h files -->
+      <file_group id="1h" output_freq="1h"  output_level="10" enabled=".TRUE."> <!-- 4h files -->
+	<file id="file1" name_suffix="_1h" description="hourly mean t-grid" enabled=".TRUE.">
+          <field field_ref="ssh" name="ssh" />
+        </file>
+      </file_group>
 <!--        <file id="file1" name_suffix="_u" description="3d u max output every 4h" enabled=".TRUE." >
           <field field_ref="uoce_abs_max" name="uoce_abs_max" />
         </file>

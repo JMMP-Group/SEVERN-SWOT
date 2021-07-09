@@ -18,7 +18,11 @@
 
 cd $WDIR
 # Ensure the correct modules are loaded for ARHCER2
-module -s restore /work/n01/shared/acc/n01_modules/ucx_env
+#module -s restore /work/n01/shared/acc/n01_modules/ucx_env
+module load cpe/21.03
+module load cray-hdf5-parallel
+module load cray-netcdf-hdf5parallel
+export LD_LIBRARY_PATH=$CRAY_LD_LIBRARY_PATH:$LD_LIBRARY_PATH
 
 #download xios
 svn checkout -r 1964 http://forge.ipsl.jussieu.fr/ioserver/svn/XIOS/branchs/xios-2.5 $XIOS_DIR
