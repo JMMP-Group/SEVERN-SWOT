@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=nemo_test
-#SBATCH --time=24:00:00
-#SBATCH --nodes=2
-#SBATCH --ntasks=6
+#SBATCH --time=00:10:00
+#SBATCH --nodes=1
+#SBATCH --ntasks=3
 #SBATCH --account=n01-CLASS
 #SBATCH --partition=standard
 #SBATCH --qos=standard
@@ -22,7 +22,7 @@ export OMP_NUM_THREADS=1
 cat > myscript_wrapper2.sh << EOFB
 #!/bin/ksh
 #
-set -A map /work/n01/n01/jelt/SEVERN-SWOT/BUILD_EXE/XIOS/xios-2.5/bin/xios_server.exe /work/n01/n01/jelt/SEVERN-SWOT/BUILD_EXE/NEMO/4.0.6/cfgs/NEMOconstTS/BLD/bin/nemo.exe
+set -A map /work/n01/n01/marpay/SEVERN-SWOT/BUILD_EXE/XIOS/xios-2.5/bin/xios_server.exe /work/n01/n01/jelt/SEVERN-SWOT/BUILD_EXE/NEMO/4.0.6/cfgs/NEMOconstTS/BLD/bin/nemo.exe
 exec_map=( 0 1 1 )
 #
 exec \${map[\${exec_map[\$SLURM_PROCID]}]} 
