@@ -109,7 +109,7 @@ MODULE zdfgls
 #  include "vectopt_loop_substitute.h90"
    !!----------------------------------------------------------------------
    !! NEMO/OCE 4.0 , NEMO Consortium (2018)
-   !! $Id$
+   !! $Id: zdfgls.F90 13511 2020-09-24 08:55:10Z smasson $
    !! Software governed by the CeCILL license (see ./LICENSE)
    !!----------------------------------------------------------------------
 CONTAINS
@@ -187,8 +187,8 @@ CONTAINS
       IF( .NOT.ln_drg_OFF ) THEN    !== top/bottom friction   (explicit before friction)
          DO jj = 2, jpjm1                      ! bottom friction
             DO ji = fs_2, fs_jpim1   ! vector opt.         
-               zmsku = 0.5*( 2._wp - umask(ji-1,jj,mbkt(ji,jj)) * umask(ji,jj,mbkt(ji,jj)) )
-               zmskv = 0.5*( 2._wp - vmask(ji,jj-1,mbkt(ji,jj)) * vmask(ji,jj,mbkt(ji,jj)) )     ! (CAUTION: CdU<0)
+               zmsku = 0.5_wp * ( 2._wp - umask(ji-1,jj,mbkt(ji,jj)) * umask(ji,jj,mbkt(ji,jj)) )
+               zmskv = 0.5_wp * ( 2._wp - vmask(ji,jj-1,mbkt(ji,jj)) * vmask(ji,jj,mbkt(ji,jj)) )     ! (CAUTION: CdU<0)
                ustar2_bot(ji,jj) = - rCdU_bot(ji,jj) * SQRT(  ( zmsku*( ub(ji,jj,mbkt(ji,jj))+ub(ji-1,jj,mbkt(ji,jj)) ) )**2  &
                   &                                         + ( zmskv*( vb(ji,jj,mbkt(ji,jj))+vb(ji,jj-1,mbkt(ji,jj)) ) )**2  )
             END DO
@@ -196,8 +196,8 @@ CONTAINS
          IF( ln_isfcav ) THEN       !top friction
             DO jj = 2, jpjm1
                DO ji = fs_2, fs_jpim1   ! vector opt.
-                  zmsku = ( 2._wp - umask(ji-1,jj,mikt(ji,jj)) * umask(ji,jj,mikt(ji,jj)) )
-                  zmskv = ( 2._wp - vmask(ji,jj-1,mikt(ji,jj)) * vmask(ji,jj,mikt(ji,jj)) )     ! (CAUTION: CdU<0)
+                  zmsku = 0.5_wp * ( 2._wp - umask(ji-1,jj,mikt(ji,jj)) * umask(ji,jj,mikt(ji,jj)) )
+                  zmskv = 0.5_wp * ( 2._wp - vmask(ji,jj-1,mikt(ji,jj)) * vmask(ji,jj,mikt(ji,jj)) )     ! (CAUTION: CdU<0)
                   ustar2_top(ji,jj) = - rCdU_top(ji,jj) * SQRT(  ( zmsku*( ub(ji,jj,mikt(ji,jj))+ub(ji-1,jj,mikt(ji,jj)) ) )**2  &
                      &                                         + ( zmskv*( vb(ji,jj,mikt(ji,jj))+vb(ji,jj-1,mikt(ji,jj)) ) )**2  )
                END DO
@@ -405,10 +405,6 @@ CONTAINS
                ibotm1 = mbkt(ji,jj)          ! k-1 bottom level of w-point but >=1
                !
                z_en =  MAX( rc02r * ustar2_bot(ji,jj), rn_emin )
-
-!CEOD This is not set in default code .. bug.
-               en(ji,jj,ibot) = MAX( rc02r * ustar2_bot(ji,jj), rn_emin )
-
                !
                ! Bottom level Dirichlet condition:
                !     Bottom level (ibot)      &      Just above it (ibotm1)   
@@ -416,6 +412,7 @@ CONTAINS
                zd_lw(ji,jj,ibot) = 0._wp   !   ! Remove zd_up from zdiag
                zdiag(ji,jj,ibot) = 1._wp   ;   zdiag(ji,jj,ibotm1) = zdiag(ji,jj,ibotm1) + zd_up(ji,jj,ibotm1)
                zd_up(ji,jj,ibot) = 0._wp   ;   zd_up(ji,jj,ibotm1) = 0._wp
+               en   (ji,jj,ibot) = z_en
             END DO
          END DO
          IF( ln_isfcav) THEN     ! top boundary   (ocean cavity)
@@ -432,6 +429,7 @@ CONTAINS
                   zd_lw(ji,jj,itop) = 0._wp   !   ! Remove zd_up from zdiag
                   zdiag(ji,jj,itop) = 1._wp   ;   zdiag(ji,jj,itopp1) = zdiag(ji,jj,itopp1) + zd_up(ji,jj,itopp1)
                   zd_up(ji,jj,itop) = 0._wp   ;   zd_up(ji,jj,itopp1) = 0._wp
+                  en   (ji,jj,itop) = z_en
                END DO
             END DO
          ENDIF
