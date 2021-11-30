@@ -38,4 +38,5 @@ export DOMAIN=$WDIR/BUILD_CFG/DOMAIN # base directory for building domain config
 
 export DOWNLOADS=$WDIR/DOWNLOADS
 
+export OBC=$WDIR/BUILD_CFG/OPEN_BOUNDARIES
 export SBC=$WDIR/BUILD_CFG/SURFACE_FORCING
